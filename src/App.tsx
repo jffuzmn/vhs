@@ -1,7 +1,5 @@
 import { useState, useMemo } from 'react'
 import moviesData from './movies.json'
-import { Input } from '@/components/ui/input'
-import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface Movie {
   id: string
@@ -31,65 +29,65 @@ function App() {
   }, [searchQuery, sortedMovies])
 
   return (
-    <div className="container mx-auto p-6 max-w-6xl">
-      <div className="mb-8 flex items-center justify-between gap-4">
+    <div className="container mx-auto p-6 max-w-7xl">
+      <div className="neo-header flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-4xl font-bold mb-2">VHS Collection</h1>
-          <p className="text-lg text-muted-foreground">
+          <h1 className="neo-title text-5xl mb-2">VHS Collection</h1>
+          <p className="neo-count text-xl">
             Amount: {moviesData.length}
           </p>
         </div>
 
         <div className="flex-shrink-0">
-          <Input
+          <input
             type="text"
             placeholder="Search movies..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-64"
+            className="neo-input w-64"
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         {filteredMovies.map((movie: Movie) => (
-          <Card key={movie.id} className="hover:shadow-lg transition-shadow overflow-hidden w-full">
-            <div className="aspect-[2/3] max-h-64 bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center mx-auto">
+          <div key={movie.id} className="neo-card">
+            <div className="aspect-[2/3] max-h-64 neo-placeholder flex items-center justify-center mb-3">
               {movie.img_url ? (
                 <img 
                   src={movie.img_url} 
                   alt={movie.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover rounded-md"
                 />
               ) : (
-                <div className="text-center p-4">
+                <div className="text-center">
                   <svg 
-                    className="w-16 h-16 mx-auto text-muted-foreground/40"
+                    className="w-16 h-16 mx-auto neo-vhs-icon"
                     fill="none" 
                     stroke="currentColor" 
                     viewBox="0 0 24 24"
+                    strokeWidth={2.5}
                   >
                     <path 
                       strokeLinecap="round" 
                       strokeLinejoin="round" 
-                      strokeWidth={1.5} 
                       d="M7 4v16M17 4v16M3 8h18M3 12h18M3 16h18"
                     />
                   </svg>
-                  <p className="text-xs text-muted-foreground/60 mt-2">VHS</p>
+                  <p className="text-sm font-bold mt-2 neo-vhs-icon">VHS</p>
                 </div>
               )}
             </div>
-            <CardHeader className="text-center">
-              <CardTitle className="text-lg text-balance">{movie.name}</CardTitle>
-            </CardHeader>
-          </Card>
+            <h3 className="neo-movie-title text-center">{movie.name}</h3>
+          </div>
         ))}
       </div>
 
       {filteredMovies.length === 0 && (
-        <div className="text-center py-12 text-muted-foreground">
-          No movies found matching "{searchQuery}"
+        <div className="text-center py-12">
+          <div className="neo-card inline-block bg-red-400">
+            <p className="text-xl font-bold">No movies found matching "{searchQuery}"</p>
+          </div>
         </div>
       )}
     </div>
