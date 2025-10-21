@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react'
-import './App.css'
 import moviesData from './movies.json'
 import { Input } from '@/components/ui/input'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
@@ -28,21 +27,23 @@ function App() {
 
   return (
     <div className="container mx-auto p-6 max-w-6xl">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">VHS Collection</h1>
-        <p className="text-lg text-muted-foreground">
-          Amount: {moviesData.length}
-        </p>
-      </div>
+      <div className="mb-8 flex items-center justify-between gap-4">
+        <div>
+          <h1 className="text-4xl font-bold mb-2">VHS Collection</h1>
+          <p className="text-lg text-muted-foreground">
+            Amount: {moviesData.length}
+          </p>
+        </div>
 
-      <div className="mb-6">
-        <Input
-          type="text"
-          placeholder="Search movies..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="max-w-md"
-        />
+        <div className="flex-shrink-0">
+          <Input
+            type="text"
+            placeholder="Search movies..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-64"
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center">
