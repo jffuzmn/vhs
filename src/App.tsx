@@ -13,7 +13,12 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('')
 
   const sortedMovies = useMemo(() => {
-    return [...moviesData].sort((a, b) => a.name.localeCompare(b.name))
+    const stripThe = (name: string) => {
+      return name.replace(/^The\s+/i, '')
+    }
+    return [...moviesData].sort((a, b) => 
+      stripThe(a.name).localeCompare(stripThe(b.name))
+    )
   }, [])
 
   const filteredMovies = useMemo(() => {
