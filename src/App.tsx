@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react'
 import './App.css'
 import moviesData from './movies.json'
 import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface Movie {
   id: string
@@ -45,11 +45,37 @@ function App() {
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center">
         {filteredMovies.map((movie: Movie) => (
-          <Card key={movie.id} className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="text-lg">{movie.name}</CardTitle>
+          <Card key={movie.id} className="hover:shadow-lg transition-shadow overflow-hidden w-full">
+            <div className="aspect-[2/3] max-h-64 bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center mx-auto">
+              {movie.img_url ? (
+                <img 
+                  src={movie.img_url} 
+                  alt={movie.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="text-center p-4">
+                  <svg 
+                    className="w-16 h-16 mx-auto text-muted-foreground/40"
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth={1.5} 
+                      d="M7 4v16M17 4v16M3 8h18M3 12h18M3 16h18"
+                    />
+                  </svg>
+                  <p className="text-xs text-muted-foreground/60 mt-2">VHS</p>
+                </div>
+              )}
+            </div>
+            <CardHeader className="text-center">
+              <CardTitle className="text-lg text-balance">{movie.name}</CardTitle>
             </CardHeader>
           </Card>
         ))}
