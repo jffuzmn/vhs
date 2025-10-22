@@ -1,0 +1,241 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Windows 95 Desktop Theme */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'MS Sans Serif', 'Microsoft Sans Serif', sans-serif;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.win95-desktop {
+  min-height: 100vh;
+  background: #008080;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.win95-window-frame {
+  width: 95vw;
+  max-width: 1400px;
+  height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 3px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  background: #c0c0c0;
+}
+
+  .win95-title-bar {
+    background: #000080 !important;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px;
+    padding: 4px !important;
+  }
+  
+  .win95-title-bar * {
+    color: #ffffff !important;
+  }
+
+
+.win95-menu-bar {
+  background: #c0c0c0;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-bottom: 1px solid #808080;
+  gap: 0.5rem;
+}
+
+.win95-menu-item {
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  font-size: 14px;
+}
+
+.win95-menu-item:hover {
+  background: #000080;
+  color: #ffffff;
+}
+
+.modal-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.win95-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  box-shadow: 2px 2px 0px #000000;
+}
+
+.win95-header-content {
+  flex: 1;
+  min-width: 250px;
+}
+
+.win95-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0 0 0.5rem 0;
+  color: #000000;
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+}
+
+.win95-count {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.win95-search {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.win95-search-input {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+}
+.win95-main-frame {
+  margin: 2rem auto;
+  max-width: 95vw;
+}
+
+.win95-content-frame {
+  margin-top: 1.5rem;
+  min-height: 60vh;
+}
+
+/* Movie Grid */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .movie-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .movie-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .movie-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .movie-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* 3D Interactive Movie Cards */
+.movie-card {
+  aspect-ratio: 2/3;
+  width: 100%;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.1s ease-out;
+  transform-style: preserve-3d;
+  overflow: hidden;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  box-shadow: 2px 2px 0px #000000;
+}
+
+.movie-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    600px circle at var(--mouse-x) var(--mouse-y),
+    rgba(255, 255, 255, 0.3),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.movie-card:hover::before {
+  opacity: 1;
+}
+
+.movie-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.movie-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #c0c0c0;
+  color: #000000;
+}
+
+.vhs-icon {
+  width: 4rem;
+  height: 4rem;
+  opacity: 0.5;
+}
+
+.vhs-text {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: bold;
+}
+
+.no-results {
+  text-align: center;
+  padding: 3rem 0;
+}

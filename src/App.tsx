@@ -1,4 +1,6 @@
 import { useState, useMemo } from 'react'
+import { Frame, Input, TitleBar } from '@react95/core'
+import { Mplayer10 } from '@react95/icons'
 import moviesData from './movies.json'
 
 interface Movie {
@@ -10,9 +12,36 @@ interface Movie {
 function App() {
   const [searchQuery, setSearchQuery] = useState('')
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget
+    const rect = card.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    
+    const centerX = rect.width / 1
+    const centerY = rect.height / 1
+    
+    const rotateX = ((y - centerY) / centerY) * -10
+    const rotateY = ((x - centerX) / centerX) * 10
+    
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`
+    
+    // Update glow position
+    const glowX = (x / rect.width) * 100
+    const glowY = (y / rect.height) * 100
+    card.style.setProperty('--mouse-x', `${glowX}%`)
+    card.style.setProperty('--mouse-y', `${glowY}%`)
+  }
+
+  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget
+    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)'
+  }
+
   const sortedMovies = useMemo(() => {
     const stripThe = (name: string) => {
       return name.replace(/^The\s+/i, '')
+      .replace(/^A\s+/i, '')
     }
     return [...moviesData].sort((a, b) => 
       stripThe(a.name).localeCompare(stripThe(b.name))
@@ -29,67 +58,83 @@ function App() {
   }, [searchQuery, sortedMovies])
 
   return (
-    <div className="container mx-auto p-6 max-w-7xl">
-      <div className="neo-header flex items-center justify-between gap-4 flex-wrap">
-        <div>
-          <h1 className="neo-title text-5xl mb-2">VHS Collection</h1>
-          <p className="neo-count text-xl">
-            Amount: {moviesData.length}
-          </p>
-        </div>
-
-        <div className="flex-shrink-0">
-          <input
-            type="text"
-            placeholder="Search movies..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="neo-input w-64"
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-        {filteredMovies.map((movie: Movie) => (
-          <div key={movie.id} className="neo-card">
-            <div className="aspect-[2/3] max-h-64 neo-placeholder flex items-center justify-center mb-3">
-              {movie.img_url ? (
-                <img 
-                  src={movie.img_url} 
-                  alt={movie.name}
-                  className="w-full h-full object-cover rounded-md"
-                />
-              ) : (
-                <div className="text-center">
-                  <svg 
-                    className="w-16 h-16 mx-auto neo-vhs-icon"
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                    strokeWidth={2.5}
-                  >
-                    <path 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      d="M7 4v16M17 4v16M3 8h18M3 12h18M3 16h18"
-                    />
-                  </svg>
-                  <p className="text-sm font-bold mt-2 neo-vhs-icon">VHS</p>
-                </div>
-              )}
+    <div className="win95-desktop">
+      <Frame className="win95-window-frame">
+        <TitleBar className="win95-title-bar" 
+        icon={<Mplayer10 variant="32x32_4" />}
+        title="VHS Collection" 
+        active={true}
+        />
+        
+        <div className="modal-content">
+          <Frame className="win95-header">
+            <div className="win95-header-content">
+              <p className="win95-count">{moviesData.length} collected</p>
             </div>
-            <h3 className="neo-movie-title text-center">{movie.name}</h3>
-          </div>
-        ))}
-      </div>
+            
+            <div className="win95-search">
+              <label htmlFor="search" style={{ marginRight: '0.5rem', fontWeight: 'bold' }}>
+                Search:
+              </label>
+              <Input className="win95-search-input"
+                id="search"
+                value={searchQuery}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
+                placeholder="Find a movie..."
+                style={{ width: '250px' }}
+              />
+            </div>
+          </Frame>
 
-      {filteredMovies.length === 0 && (
-        <div className="text-center py-12">
-          <div className="neo-card inline-block bg-red-400">
-            <p className="text-xl font-bold">No movies found matching "{searchQuery}"</p>
-          </div>
+          <Frame boxShadow="in" className="win95-content-frame">
+            <div className="movie-grid">
+              {filteredMovies.map((movie: Movie) => (
+                <div 
+                  key={movie.id} 
+                  className="movie-card"
+                  onMouseMove={handleMouseMove}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  {movie.img_url ? (
+                    <img 
+                      src={movie.img_url} 
+                      alt={movie.name}
+                      className="movie-image"
+                    />
+                  ) : (
+                    <div className="movie-placeholder">
+                      <svg 
+                        className="vhs-icon"
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                        strokeWidth={2.5}
+                      >
+                        <path 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round" 
+                          d="M7 4v16M17 4v16M3 8h18M3 12h18M3 16h18"
+                        />
+                      </svg>
+                      <p className="vhs-text">VHS</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {filteredMovies.length === 0 && (
+              <div className="no-results">
+                <Frame boxShadow="out">
+                  <p style={{ margin: 0, fontWeight: 'bold' }}>
+                    No movies found matching "{searchQuery}"
+                  </p>
+                </Frame>
+              </div>
+            )}
+          </Frame>
         </div>
-      )}
+      </Frame>
     </div>
   )
 }
