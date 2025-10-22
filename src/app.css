@@ -130,10 +130,6 @@ body {
   max-width: 95vw;
 }
 
-.win95-content-frame {
-  margin-top: 1.5rem;
-  min-height: 60vh;
-}
 
 /* Movie Grid */
 .movie-grid {
@@ -238,4 +234,74 @@ body {
 .no-results {
   text-align: center;
   padding: 3rem 0;
+}
+
+/* Windows 95 Tabs */
+.win95-tabs-container {
+  margin-top: 1.5rem;
+}
+
+.win95-tabs-header {
+  display: flex;
+  margin-bottom: -2px;
+  position: relative;
+  z-index: 1;
+}
+
+.win95-tab {
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  border-bottom: none;
+  padding: 0.5rem 1rem;
+  font-family: 'MS Sans Serif', 'Microsoft Sans Serif', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  margin-right: 2px;
+  position: relative;
+  outline: none;
+}
+
+.win95-tab:hover:not(.win95-tab-active) {
+  background: #d4d0c8;
+}
+
+.win95-tab:active:not(.win95-tab-active) {
+  border-color: #000000 #ffffff #ffffff #000000;
+  background: #b8b4ac;
+}
+
+.win95-tab-active {
+  background: #c0c0c0;
+  border-color: #ffffff #000000 #c0c0c0 #ffffff;
+  border-bottom: 2px solid #c0c0c0;
+  z-index: 2;
+  position: relative;
+}
+
+.win95-tab-active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #c0c0c0;
+}
+
+.win95-tab-content {
+  min-height: 60vh;
+  position: relative;
+  z-index: 0;
+}
+
+/* Wishlist Content */
+.wishlist-content {
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
 }

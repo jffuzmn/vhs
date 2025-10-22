@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { Frame, Input, TitleBar } from '@react95/core'
 import { Mplayer10 } from '@react95/icons'
+import { Tabs, Tab } from './components/Tabs'
 import moviesData from './movies.json'
 
 interface Movie {
@@ -86,53 +87,68 @@ function App() {
             </div>
           </Frame>
 
-          <Frame boxShadow="in" className="win95-content-frame">
-            <div className="movie-grid">
-              {filteredMovies.map((movie: Movie) => (
-                <div 
-                  key={movie.id} 
-                  className="movie-card"
-                  onMouseMove={handleMouseMove}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  {movie.img_url ? (
-                    <img 
-                      src={movie.img_url} 
-                      alt={movie.name}
-                      className="movie-image"
-                    />
-                  ) : (
-                    <div className="movie-placeholder">
-                      <svg 
-                        className="vhs-icon"
-                        fill="none" 
-                        stroke="currentColor" 
-                        viewBox="0 0 24 24"
-                        strokeWidth={2.5}
-                      >
-                        <path 
-                          strokeLinecap="round" 
-                          strokeLinejoin="round" 
-                          d="M7 4v16M17 4v16M3 8h18M3 12h18M3 16h18"
-                        />
-                      </svg>
-                      <p className="vhs-text">VHS</p>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+          <Tabs>
+            <Tab label="Collected">
+              <div className="movie-grid">
+                {filteredMovies.map((movie: Movie) => (
+                  <div 
+                    key={movie.id} 
+                    className="movie-card"
+                    onMouseMove={handleMouseMove}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    {movie.img_url ? (
+                      <img 
+                        src={movie.img_url} 
+                        alt={movie.name}
+                        className="movie-image"
+                      />
+                    ) : (
+                      <div className="movie-placeholder">
+                        <svg 
+                          className="vhs-icon"
+                          fill="none" 
+                          stroke="currentColor" 
+                          viewBox="0 0 24 24"
+                          strokeWidth={2.5}
+                        >
+                          <path 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round" 
+                            d="M7 4v16M17 4v16M3 8h18M3 12h18M3 16h18"
+                          />
+                        </svg>
+                        <p className="vhs-text">VHS</p>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
 
-            {filteredMovies.length === 0 && (
-              <div className="no-results">
-                <Frame boxShadow="out">
-                  <p style={{ margin: 0, fontWeight: 'bold' }}>
-                    No movies found matching "{searchQuery}"
+              {filteredMovies.length === 0 && (
+                <div className="no-results">
+                  <Frame boxShadow="out">
+                    <p style={{ margin: 0, fontWeight: 'bold' }}>
+                      No movies found matching "{searchQuery}"
+                    </p>
+                  </Frame>
+                </div>
+              )}
+            </Tab>
+            
+            <Tab label="Wishlist">
+              <div className="wishlist-content">
+                <Frame boxShadow="out" style={{ padding: '2rem', textAlign: 'center' }}>
+                  <p style={{ margin: 0, fontWeight: 'bold', fontSize: '1.1rem' }}>
+                    Wishlist Coming Soon!
+                  </p>
+                  <p style={{ margin: '1rem 0 0 0', color: '#666' }}>
+                    This feature will allow you to track movies you want to add to your collection.
                   </p>
                 </Frame>
               </div>
-            )}
-          </Frame>
+            </Tab>
+          </Tabs>
         </div>
       </Frame>
     </div>
