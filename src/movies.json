@@ -35,11 +35,6 @@
     "img_url": "/vhs/movie-covers/11be8953-fbc1-4aa2-8a0c-6a3695062071.webp"
   },
   {
-    "id": "125fa4aa-c5a8-4d0a-ba3a-aa84a4e784c0",
-    "name": "The Parent Trap",
-    "img_url": "/vhs/movie-covers/125fa4aa-c5a8-4d0a-ba3a-aa84a4e784c0.webp"
-  },
-  {
     "id": "147b2d85-3595-4f6d-a727-e84c829d7213",
     "name": "Magic School Bus: Gets Lost In Space",
     "img_url": "/vhs/movie-covers/147b2d85-3595-4f6d-a727-e84c829d7213.webp"
@@ -108,11 +103,6 @@
     "id": "3e95b73c-f0a8-43d6-a1db-23cb0f9d78e6",
     "name": "Magic School Bus: In The Rainforest",
     "img_url": "/vhs/movie-covers/3e95b73c-f0a8-43d6-a1db-23cb0f9d78e6.webp"
-  },
-  {
-    "id": "406b7901-d5a4-4f18-9f75-6660e421da8a",
-    "name": "Finding Nemo",
-    "img_url": "/vhs/movie-covers/406b7901-d5a4-4f18-9f75-6660e421da8a.webp"
   },
   {
     "id": "41b3116e-e45f-4245-9af2-ce8ae9546dd5",
@@ -283,11 +273,6 @@
     "id": "9f151be7-c8ef-40a7-a945-7916d3989f3a",
     "name": "Beauty and the Beast",
     "img_url": "/vhs/movie-covers/9f151be7-c8ef-40a7-a945-7916d3989f3a.webp"
-  },
-  {
-    "id": "a096ec2c-078b-4803-b3bd-0b76c6a6f9ef",
-    "name": "How the Grinch Stole Christmas",
-    "img_url": "/vhs/movie-covers/a096ec2c-078b-4803-b3bd-0b76c6a6f9ef.webp"
   },
   {
     "id": "a0cfec8a-0f6f-4723-bff6-226e544d153a",
