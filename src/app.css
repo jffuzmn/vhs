@@ -227,8 +227,12 @@ body {
 
 .vhs-text {
   margin-top: 0.5rem;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: bold;
+  text-align: center;
+  padding: 0 0.5rem;
+  word-break: break-word;
+  line-height: 1.2;
 }
 
 .no-results {
@@ -304,4 +308,38 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 50vh;
+}
+
+/* Add Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.add-modal {
+  width: 90%;
+  max-width: 400px;
+  background: #c0c0c0;
+  border: 3px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
+}
+
+.add-modal-content {
+  padding: 1.5rem;
+}
+
+.add-modal-field {
+  margin-bottom: 1.5rem;
+}
+
+.add-modal-buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
 }

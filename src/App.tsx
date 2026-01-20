@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react'
-import { Frame, Input, TitleBar } from '@react95/core'
+import { Frame, Input, TitleBar, Button } from '@react95/core'
 import { Mplayer10 } from '@react95/icons'
 import { Tabs, Tab } from './components/Tabs'
-import moviesData from './movies.json'
+import initialMoviesData from './movies.json'
 
 interface Movie {
   id: string
@@ -10,8 +10,14 @@ interface Movie {
   img_url: string | null
 }
 
+const API_URL = 'http://localhost:3001/api';
+
 function App() {
+  const [movies, setMovies] = useState<Movie[]>(initialMoviesData)
   const [searchQuery, setSearchQuery] = useState('')
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [newMovieTitle, setNewMovieTitle] = useState('')
+  const [isAdding, setIsAdding] = useState(false)
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const card = e.currentTarget
@@ -39,15 +45,43 @@ function App() {
     card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)'
   }
 
+  const handleAddMovie = async () => {
+    if (!newMovieTitle.trim()) return
+    
+    setIsAdding(true)
+    try {
+      const response = await fetch(`${API_URL}/movies`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: newMovieTitle.trim() }),
+      })
+      
+      if (response.ok) {
+        const newMovie = await response.json()
+        setMovies(prev => [...prev, newMovie])
+        setNewMovieTitle('')
+        setShowAddModal(false)
+      } else {
+        alert('Failed to add movie. Make sure the API server is running!')
+      }
+    } catch (error) {
+      alert('Failed to connect to API. Run: npm run server')
+    } finally {
+      setIsAdding(false)
+    }
+  }
+
   const sortedMovies = useMemo(() => {
     const stripThe = (name: string) => {
       return name.replace(/^The\s+/i, '')
       .replace(/^A\s+/i, '')
     }
-    return [...moviesData].sort((a, b) => 
+    return [...movies].sort((a, b) => 
       stripThe(a.name).localeCompare(stripThe(b.name))
     )
-  }, [])
+  }, [movies])
 
   const filteredMovies = useMemo(() => {
     if (!searchQuery.trim()) return sortedMovies
@@ -70,7 +104,7 @@ function App() {
         <div className="modal-content">
           <Frame className="win95-header">
             <div className="win95-header-content">
-              <p className="win95-count">{moviesData.length} collected</p>
+              <p className="win95-count">{movies.length} collected</p>
             </div>
             
             <div className="win95-search">
@@ -84,8 +118,57 @@ function App() {
                 placeholder="Find a movie..."
                 style={{ width: '250px' }}
               />
+              <Button 
+                onClick={() => setShowAddModal(true)}
+                style={{ marginLeft: '1rem', fontWeight: 'bold' }}
+              >
+                ➕ Add VHS
+              </Button>
             </div>
           </Frame>
+
+          {/* Add Movie Modal */}
+          {showAddModal && (
+            <div className="modal-overlay">
+              <Frame className="add-modal">
+                <TitleBar 
+                  title="Add New VHS" 
+                  active={true}
+                  icon={<Mplayer10 variant="16x16_4" />}
+                >
+                  <TitleBar.OptionsBox>
+                    <TitleBar.Close onClick={() => setShowAddModal(false)} />
+                  </TitleBar.OptionsBox>
+                </TitleBar>
+                <div className="add-modal-content">
+                  <div className="add-modal-field">
+                    <label htmlFor="movieTitle" style={{ fontWeight: 'bold', marginBottom: '0.5rem', display: 'block' }}>
+                      Movie Title:
+                    </label>
+                    <Input
+                      id="movieTitle"
+                      value={newMovieTitle}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewMovieTitle(e.target.value)}
+                      placeholder="Enter movie title..."
+                      style={{ width: '100%' }}
+                      onKeyDown={(e: React.KeyboardEvent) => {
+                        if (e.key === 'Enter') handleAddMovie()
+                      }}
+                      autoFocus
+                    />
+                  </div>
+                  <div className="add-modal-buttons">
+                    <Button onClick={handleAddMovie} disabled={isAdding || !newMovieTitle.trim()}>
+                      {isAdding ? 'Adding...' : 'Add to Collection'}
+                    </Button>
+                    <Button onClick={() => setShowAddModal(false)}>
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              </Frame>
+            </div>
+          )}
 
           <Tabs>
             <Tab label="Collected">
@@ -118,7 +201,7 @@ function App() {
                             d="M7 4v16M17 4v16M3 8h18M3 12h18M3 16h18"
                           />
                         </svg>
-                        <p className="vhs-text">VHS</p>
+                        <p className="vhs-text">{movie.name}</p>
                       </div>
                     )}
                   </div>
