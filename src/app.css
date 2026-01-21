@@ -338,7 +338,7 @@ body {
   align-items: center;
   gap: 6px;
   font-weight: bold;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .add-modal-header span {
@@ -377,7 +377,7 @@ body {
   display: block;
   font-weight: bold;
   margin-bottom: 4px;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .optional-text {
@@ -389,7 +389,7 @@ body {
   width: 100%;
   padding: 4px 6px;
   font-family: 'MS Sans Serif', 'Microsoft Sans Serif', sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   background: #ffffff;
   border: 2px solid;
   border-color: #808080 #ffffff #ffffff #808080;
@@ -407,7 +407,7 @@ body {
 }
 
 .file-name {
-  font-size: 12px;
+  font-size: 14px;
   color: #444;
   flex: 1;
   overflow: hidden;
@@ -433,8 +433,8 @@ body {
   padding: 4px 12px;
   min-width: 75px;
   font-family: 'MS Sans Serif', 'Microsoft Sans Serif', sans-serif;
-  font-size: 13px;
-  font-weight: normal;
+  font-size: 14px;
+  font-weight: bold;
   color: #000000;
   background: #c0c0c0;
   border: 2px solid;
@@ -469,7 +469,7 @@ body {
   padding: 4px 12px;
   margin-left: 1rem;
   font-family: 'MS Sans Serif', 'Microsoft Sans Serif', sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: bold;
   color: #000000;
   background: #c0c0c0;
