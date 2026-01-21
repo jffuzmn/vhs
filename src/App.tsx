@@ -67,7 +67,7 @@ function App() {
   }
 
   const handleAddMovie = async () => {
-    if (!newMovieTitle.trim()) return
+    if (!newMovieTitle.trim() || !selectedFile) return
     
     setIsAdding(true)
     try {
@@ -180,9 +180,7 @@ function App() {
                     />
                   </div>
                   <div className="add-modal-field">
-                    <label htmlFor="movieCover">
-                      Cover Image: <span className="optional-text">(optional)</span>
-                    </label>
+                    <label htmlFor="movieCover">Cover Image:</label>
                     <div className="file-upload-area">
                       <input
                         type="file"
@@ -213,7 +211,7 @@ function App() {
                     <button 
                       className="win95-btn"
                       onClick={handleAddMovie} 
-                      disabled={isAdding || !newMovieTitle.trim()}
+                      disabled={isAdding || !newMovieTitle.trim() || !selectedFile}
                     >
                       {isAdding ? 'Adding...' : 'Add to Collection'}
                     </button>
