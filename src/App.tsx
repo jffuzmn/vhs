@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react'
-import { Frame, Input, TitleBar, Button } from '@react95/core'
+import { useState, useMemo, useRef } from 'react'
+import { Frame, Input, TitleBar } from '@react95/core'
 import { Mplayer10 } from '@react95/icons'
 import { Tabs, Tab } from './components/Tabs'
 import initialMoviesData from './movies.json'
@@ -17,8 +17,10 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [showAddModal, setShowAddModal] = useState(false)
   const [newMovieTitle, setNewMovieTitle] = useState('')
-  const [newMovieImage, setNewMovieImage] = useState('')
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [isAdding, setIsAdding] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const card = e.currentTarget
@@ -46,27 +48,44 @@ function App() {
     card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)'
   }
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setSelectedFile(file)
+      const url = URL.createObjectURL(file)
+      setPreviewUrl(url)
+    }
+  }
+
+  const clearForm = () => {
+    setNewMovieTitle('')
+    setSelectedFile(null)
+    setPreviewUrl(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+  }
+
   const handleAddMovie = async () => {
     if (!newMovieTitle.trim()) return
     
     setIsAdding(true)
     try {
+      const formData = new FormData()
+      formData.append('name', newMovieTitle.trim())
+      if (selectedFile) {
+        formData.append('cover', selectedFile)
+      }
+
       const response = await fetch(`${API_URL}/movies`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          name: newMovieTitle.trim(),
-          img_url: newMovieImage.trim() || null
-        }),
+        body: formData,
       })
       
       if (response.ok) {
         const newMovie = await response.json()
         setMovies(prev => [...prev, newMovie])
-        setNewMovieTitle('')
-        setNewMovieImage('')
+        clearForm()
         setShowAddModal(false)
       } else {
         alert('Failed to add movie. Make sure the API server is running!')
@@ -136,69 +155,77 @@ function App() {
           {/* Add Movie Modal */}
           {showAddModal && (
             <div className="modal-overlay">
-              <Frame className="add-modal">
-                <TitleBar 
-                  title="Add New VHS" 
-                  active={true}
-                  icon={<Mplayer10 variant="16x16_4" />}
-                >
-                  <TitleBar.OptionsBox>
-                    <TitleBar.Close onClick={() => setShowAddModal(false)} />
-                  </TitleBar.OptionsBox>
-                </TitleBar>
+              <div className="add-modal">
+                <div className="add-modal-header">
+                  <Mplayer10 variant="16x16_4" />
+                  <span>Add New VHS</span>
+                  <button 
+                    className="modal-close-btn"
+                    onClick={() => { setShowAddModal(false); clearForm(); }}
+                  >
+                    ✕
+                  </button>
+                </div>
                 <div className="add-modal-content">
                   <div className="add-modal-field">
-                    <label htmlFor="movieTitle" style={{ fontWeight: 'bold', marginBottom: '0.5rem', display: 'block' }}>
-                      Movie Title:
-                    </label>
-                    <Input
+                    <label htmlFor="movieTitle">Movie Title:</label>
+                    <input
+                      type="text"
                       id="movieTitle"
+                      className="modal-input"
                       value={newMovieTitle}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewMovieTitle(e.target.value)}
+                      onChange={(e) => setNewMovieTitle(e.target.value)}
                       placeholder="Enter movie title..."
-                      style={{ width: '100%' }}
                       autoFocus
                     />
                   </div>
                   <div className="add-modal-field">
-                    <label htmlFor="movieImage" style={{ fontWeight: 'bold', marginBottom: '0.5rem', display: 'block' }}>
-                      Cover Image URL: <span style={{ fontWeight: 'normal', color: '#666' }}>(optional)</span>
+                    <label htmlFor="movieCover">
+                      Cover Image: <span className="optional-text">(optional)</span>
                     </label>
-                    <Input
-                      id="movieImage"
-                      value={newMovieImage}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewMovieImage(e.target.value)}
-                      placeholder="https://example.com/cover.jpg"
-                      style={{ width: '100%' }}
-                      onKeyDown={(e: React.KeyboardEvent) => {
-                        if (e.key === 'Enter' && newMovieTitle.trim()) handleAddMovie()
-                      }}
-                    />
-                    {newMovieImage && (
+                    <div className="file-upload-area">
+                      <input
+                        type="file"
+                        id="movieCover"
+                        ref={fileInputRef}
+                        accept="image/*"
+                        onChange={handleFileSelect}
+                        style={{ display: 'none' }}
+                      />
+                      <button 
+                        type="button"
+                        className="win95-btn"
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        Browse...
+                      </button>
+                      <span className="file-name">
+                        {selectedFile ? selectedFile.name : 'No file selected'}
+                      </span>
+                    </div>
+                    {previewUrl && (
                       <div className="image-preview">
-                        <img 
-                          src={newMovieImage} 
-                          alt="Preview" 
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).style.display = 'none'
-                          }}
-                          onLoad={(e) => {
-                            (e.target as HTMLImageElement).style.display = 'block'
-                          }}
-                        />
+                        <img src={previewUrl} alt="Preview" />
                       </div>
                     )}
                   </div>
                   <div className="add-modal-buttons">
-                    <Button onClick={handleAddMovie} disabled={isAdding || !newMovieTitle.trim()}>
+                    <button 
+                      className="win95-btn"
+                      onClick={handleAddMovie} 
+                      disabled={isAdding || !newMovieTitle.trim()}
+                    >
                       {isAdding ? 'Adding...' : 'Add to Collection'}
-                    </Button>
-                    <Button onClick={() => { setShowAddModal(false); setNewMovieTitle(''); setNewMovieImage(''); }}>
+                    </button>
+                    <button 
+                      className="win95-btn"
+                      onClick={() => { setShowAddModal(false); clearForm(); }}
+                    >
                       Cancel
-                    </Button>
+                    </button>
                   </div>
                 </div>
-              </Frame>
+              </div>
             </div>
           )}
 
