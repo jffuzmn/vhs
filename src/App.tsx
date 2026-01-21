@@ -17,6 +17,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [showAddModal, setShowAddModal] = useState(false)
   const [newMovieTitle, setNewMovieTitle] = useState('')
+  const [newMovieImage, setNewMovieImage] = useState('')
   const [isAdding, setIsAdding] = useState(false)
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -55,13 +56,17 @@ function App() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name: newMovieTitle.trim() }),
+        body: JSON.stringify({ 
+          name: newMovieTitle.trim(),
+          img_url: newMovieImage.trim() || null
+        }),
       })
       
       if (response.ok) {
         const newMovie = await response.json()
         setMovies(prev => [...prev, newMovie])
         setNewMovieTitle('')
+        setNewMovieImage('')
         setShowAddModal(false)
       } else {
         alert('Failed to add movie. Make sure the API server is running!')
@@ -118,12 +123,13 @@ function App() {
                 placeholder="Find a movie..."
                 style={{ width: '250px' }}
               />
-              <Button 
+              <button 
+                className="add-vhs-btn"
                 onClick={() => setShowAddModal(true)}
-                style={{ marginLeft: '1rem', fontWeight: 'bold' }}
               >
-                ➕ Add VHS
-              </Button>
+                <span className="add-vhs-icon">+</span>
+                Add VHS
+              </button>
             </div>
           </Frame>
 
@@ -151,17 +157,43 @@ function App() {
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewMovieTitle(e.target.value)}
                       placeholder="Enter movie title..."
                       style={{ width: '100%' }}
-                      onKeyDown={(e: React.KeyboardEvent) => {
-                        if (e.key === 'Enter') handleAddMovie()
-                      }}
                       autoFocus
                     />
+                  </div>
+                  <div className="add-modal-field">
+                    <label htmlFor="movieImage" style={{ fontWeight: 'bold', marginBottom: '0.5rem', display: 'block' }}>
+                      Cover Image URL: <span style={{ fontWeight: 'normal', color: '#666' }}>(optional)</span>
+                    </label>
+                    <Input
+                      id="movieImage"
+                      value={newMovieImage}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewMovieImage(e.target.value)}
+                      placeholder="https://example.com/cover.jpg"
+                      style={{ width: '100%' }}
+                      onKeyDown={(e: React.KeyboardEvent) => {
+                        if (e.key === 'Enter' && newMovieTitle.trim()) handleAddMovie()
+                      }}
+                    />
+                    {newMovieImage && (
+                      <div className="image-preview">
+                        <img 
+                          src={newMovieImage} 
+                          alt="Preview" 
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'none'
+                          }}
+                          onLoad={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'block'
+                          }}
+                        />
+                      </div>
+                    )}
                   </div>
                   <div className="add-modal-buttons">
                     <Button onClick={handleAddMovie} disabled={isAdding || !newMovieTitle.trim()}>
                       {isAdding ? 'Adding...' : 'Add to Collection'}
                     </Button>
-                    <Button onClick={() => setShowAddModal(false)}>
+                    <Button onClick={() => { setShowAddModal(false); setNewMovieTitle(''); setNewMovieImage(''); }}>
                       Cancel
                     </Button>
                   </div>

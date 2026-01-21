@@ -17,7 +17,7 @@ const MOVIES_PATH = path.join(__dirname, 'src', 'movies.json');
 // Add a new movie
 app.post('/api/movies', async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, img_url } = req.body;
     
     if (!name || !name.trim()) {
       return res.status(400).json({ error: 'Movie name is required' });
@@ -26,16 +26,18 @@ app.post('/api/movies', async (req, res) => {
     const moviesData = await fs.readFile(MOVIES_PATH, 'utf-8');
     const movies = JSON.parse(moviesData);
     
+    const newId = randomUUID();
     const newMovie = {
-      id: randomUUID(),
+      id: newId,
       name: name.trim(),
-      img_url: null
+      img_url: img_url || null
     };
     
     movies.push(newMovie);
     
     await fs.writeFile(MOVIES_PATH, JSON.stringify(movies, null, 2));
     
+    console.log(`✅ Added: "${newMovie.name}" (ID: ${newId})`);
     res.status(201).json(newMovie);
   } catch (error) {
     console.error('Error adding movie:', error);
