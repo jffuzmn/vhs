@@ -403,5 +403,35 @@
     "id": "ffb628ce-340d-45e8-b91b-b117b5623c25",
     "name": "The Sound of Music",
     "img_url": "/vhs/movie-covers/ffb628ce-340d-45e8-b91b-b117b5623c25.webp"
+  },
+  {
+    "id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+    "name": "Snow Dogs",
+    "img_url": "/vhs/movie-covers/a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d.webp"
+  },
+  {
+    "id": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
+    "name": "The Little Mermaid 2: Return to the sea",
+    "img_url": "/vhs/movie-covers/b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e.webp"
+  },
+  {
+    "id": "c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f",
+    "name": "Casper",
+    "img_url": "/vhs/movie-covers/c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f.webp"
+  },
+  {
+    "id": "d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f8a",
+    "name": "Homeward Bound: The Incredible Journey",
+    "img_url": "/vhs/movie-covers/d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f8a.webp"
+  },
+  {
+    "id": "e5f6a7b8-c9d0-4e1f-2a3b-4c5d6e7f8a9b",
+    "name": "The Princess Diaries",
+    "img_url": "/vhs/movie-covers/e5f6a7b8-c9d0-4e1f-2a3b-4c5d6e7f8a9b.webp"
+  },
+  {
+    "id": "f6a7b8c9-d0e1-4f2a-3b4c-5d6e7f8a9b0c",
+    "name": "Pocahontas",
+    "img_url": "/vhs/movie-covers/f6a7b8c9-d0e1-4f2a-3b4c-5d6e7f8a9b0c.webp"
   }
 ]
