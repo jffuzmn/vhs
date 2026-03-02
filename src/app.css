@@ -296,12 +296,3 @@ body {
   position: relative;
   z-index: 0;
 }
-
-/* Wishlist Content */
-.wishlist-content {
-  padding: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 50vh;
-}

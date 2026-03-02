@@ -135,19 +135,6 @@ function App() {
                 </div>
               )}
             </Tab>
-            
-            <Tab label="Wishlist">
-              <div className="wishlist-content">
-                <Frame boxShadow="out" style={{ padding: '2rem', textAlign: 'center' }}>
-                  <p style={{ margin: 0, fontWeight: 'bold', fontSize: '1.1rem' }}>
-                    Wishlist Coming Soon!
-                  </p>
-                  <p style={{ margin: '1rem 0 0 0', color: '#666' }}>
-                    This feature will allow you to track movies you want to add to your collection.
-                  </p>
-                </Frame>
-              </div>
-            </Tab>
           </Tabs>
         </div>
       </Frame>

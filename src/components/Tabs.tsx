@@ -8,7 +8,7 @@ interface TabProps {
 }
 
 interface TabsProps {
-  children: React.ReactElement<TabProps>[]
+  children: React.ReactElement<TabProps> | React.ReactElement<TabProps>[]
   defaultTab?: number
 }
 
@@ -18,11 +18,12 @@ export const Tab = ({ children }: TabProps) => {
 
 export const Tabs = ({ children, defaultTab = 0 }: TabsProps) => {
   const [activeTab, setActiveTab] = useState(defaultTab)
+  const tabs = Array.isArray(children) ? children : [children]
 
   return (
     <div className="win95-tabs-container">
       <div className="win95-tabs-header">
-        {children.map((child, index) => (
+        {tabs.map((child, index) => (
           <button
             key={index}
             className={`win95-tab ${activeTab === index ? 'win95-tab-active' : ''}`}
@@ -34,7 +35,7 @@ export const Tabs = ({ children, defaultTab = 0 }: TabsProps) => {
       </div>
       
       <Frame boxShadow="in" className="win95-tab-content">
-        {children[activeTab]}
+        {tabs[activeTab]}
       </Frame>
     </div>
   )
